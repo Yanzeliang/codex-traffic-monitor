@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.local.codex-traffic-monitor</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-c</string>
+    <string>exec python3 "$HOME/.local/share/codex-traffic-monitor/codex_monitor.py" daemon --interval 10</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ProcessType</key><string>Background</string>
+  <key>StandardOutPath</key><string>/tmp/codex-traffic-monitor.stdout.log</string>
+  <key>StandardErrorPath</key><string>/tmp/codex-traffic-monitor.stderr.log</string>
+</dict>
+</plist>

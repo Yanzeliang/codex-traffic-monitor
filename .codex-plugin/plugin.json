@@ -1,0 +1,29 @@
+{
+  "name": "codex-traffic-monitor",
+  "version": "0.1.0",
+  "description": "Privacy-preserving local monitoring for Codex processes, connections, token usage, rate limits, and available credit balance.",
+  "author": {
+    "name": "Yanzeliang"
+  },
+  "homepage": "https://github.com/Yanzeliang/codex-traffic-monitor",
+  "repository": "https://github.com/Yanzeliang/codex-traffic-monitor",
+  "license": "MIT",
+  "keywords": ["codex", "monitoring", "tokens", "traffic", "processes"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Traffic Monitor",
+    "shortDescription": "Monitor local Codex traffic, tokens, balance, and processes.",
+    "longDescription": "Reads local Codex telemetry and macOS process/network metadata without collecting prompt text, response content, credentials, or TLS payloads.",
+    "developerName": "Yanzeliang",
+    "category": "Developer Tools",
+    "capabilities": ["Local monitoring", "Token accounting", "Process inventory", "Network metadata"],
+    "defaultPrompt": [
+      "显示 Codex 当前监控状态",
+      "导出 Codex 监控报告",
+      "检查 Codex Token 和余额"
+    ],
+    "brandColor": "#10A37F",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  }
+}
