@@ -21,7 +21,7 @@ xcrun swiftc -parse-as-library -O \
   "${ROOT}/macos-widget/CodexMonitorWidget.swift"
 
 cp "${ROOT}/macos-widget/Info.plist" "${APP}/Contents/Info.plist"
-cp "${ROOT}/assets/logo.png" "${APP}/Contents/Resources/logo.png"
+cp "${ROOT}/assets/CodexMonitor.icns" "${APP}/Contents/Resources/CodexMonitor.icns"
 xattr -cr "${APP}"
 codesign --force --deep --sign - "${APP}"
 codesign --verify --deep --strict "${APP}"
