@@ -60,13 +60,48 @@ final class MonitorModel: ObservableObject {
     @Published var error: String?
     @Published var lastLoaded = Date.distantPast
     private var timer: Timer?
+    private var isCollecting = false
     private let fileURL = FileManager.default.homeDirectoryForCurrentUser
         .appendingPathComponent(".codex-monitor/latest.json")
 
     init() {
-        load()
+        refresh()
         timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.load() }
+            Task { @MainActor in self?.refresh() }
+        }
+    }
+
+    func refresh() {
+        guard !isCollecting else { return }
+        guard let scriptURL = Bundle.main.url(forResource: "codex_monitor", withExtension: "py") else {
+            error = "应用内缺少采集器，请重新安装"
+            return
+        }
+        isCollecting = true
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+            process.arguments = ["python3", scriptURL.path, "collect-once"]
+            process.standardOutput = FileHandle.nullDevice
+            process.standardError = FileHandle.nullDevice
+            do {
+                try process.run()
+                process.waitUntilExit()
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    self.isCollecting = false
+                    if process.terminationStatus == 0 {
+                        self.load()
+                    } else {
+                        self.error = "本地采集失败（退出码 \(process.terminationStatus)）"
+                    }
+                }
+            } catch {
+                Task { @MainActor [weak self] in
+                    self?.isCollecting = false
+                    self?.error = "无法启动本地采集器：\(error.localizedDescription)"
+                }
+            }
         }
     }
 
@@ -225,7 +260,7 @@ struct ContentView: View {
                 Circle()
                     .fill(model.error == nil ? Color.green : Color.red)
                     .frame(width: 9, height: 9)
-                Button { model.load() } label: { Image(systemName: "arrow.clockwise") }
+                Button { model.refresh() } label: { Image(systemName: "arrow.clockwise") }
                     .buttonStyle(.borderless).help("立即刷新")
             }
 

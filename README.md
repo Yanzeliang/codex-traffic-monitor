@@ -44,7 +44,11 @@ chmod +x scripts/*.sh
 ./scripts/install.sh
 ```
 
-The installer builds an ad-hoc signed SwiftUI app, installs it at `~/Applications/Codex Monitor.app`, and registers two user LaunchAgents. Both the collector and menu bar app start at login and restart after unexpected exits.
+The installer builds an ad-hoc signed SwiftUI app and installs it at `~/Applications/Codex Monitor.app`. It does not register a login item or background service. Open the app manually when monitoring is needed; collection stops when the app is closed.
+
+```bash
+open "$HOME/Applications/Codex Monitor.app"
+```
 
 ## Uninstall
 
