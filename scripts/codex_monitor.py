@@ -522,6 +522,7 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     snap = sub.add_parser("snapshot")
     snap.add_argument("--json", action="store_true")
+    sub.add_parser("collect-once")
     sub.add_parser("report")
     install = sub.add_parser("install-daemon")
     install.add_argument("--interval", type=int, default=10)
@@ -533,6 +534,9 @@ def main() -> int:
     if args.command == "snapshot":
         data = snapshot()
         print(json.dumps(data, ensure_ascii=False, indent=2) if args.json else render_text(data))
+        return 0
+    if args.command == "collect-once":
+        write_snapshot(snapshot())
         return 0
     if args.command == "report":
         path = write_report(snapshot())

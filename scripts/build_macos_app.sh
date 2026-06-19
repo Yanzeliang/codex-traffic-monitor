@@ -22,9 +22,12 @@ xcrun swiftc -parse-as-library -O \
 
 cp "${ROOT}/macos-widget/Info.plist" "${APP}/Contents/Info.plist"
 cp "${ROOT}/assets/CodexMonitor.icns" "${APP}/Contents/Resources/CodexMonitor.icns"
+cp "${ROOT}/scripts/codex_monitor.py" "${APP}/Contents/Resources/codex_monitor.py"
+chmod 700 "${APP}/Contents/Resources/codex_monitor.py"
 xattr -cr "${APP}"
 codesign --force --deep --sign - "${APP}"
 codesign --verify --deep --strict "${APP}"
 mkdir -p "${BUILD_DIR}"
+rm -rf "${BUILD_DIR}/Codex Monitor.app"
 ditto "${APP}" "${BUILD_DIR}/Codex Monitor.app"
 echo "Built ${BUILD_DIR}/Codex Monitor.app"
